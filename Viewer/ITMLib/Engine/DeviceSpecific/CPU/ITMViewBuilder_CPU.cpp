@@ -34,20 +34,21 @@ void ITMViewBuilder_CPU::UpdateView(ITMView **view_ptr, ITMUChar4Image *rgbImage
 	view->rgb->SetFrom(rgbImage, MemoryBlock<Vector4u>::CPU_TO_CPU);
 	this->shortImage->SetFrom(rawDepthImage, MemoryBlock<short>::CPU_TO_CPU);
 
-    this->ConvertDepthAffineToFloat(view->depth, this->shortImage, view->calib->disparityCalib.params);
+    // use for forcing raw depth MM
+    //this->ConvertDepthAffineToFloat(view->depth, this->shortImage, view->calib->disparityCalib.params);
     
-//	switch (view->calib->disparityCalib.type)
-//	{
-//	case ITMDisparityCalib::TRAFO_KINECT:
-//		this->ConvertDisparityToDepth(view->depth, this->shortImage, &(view->calib->intrinsics_d), view->calib->disparityCalib.params);
-//		break;
-//	case ITMDisparityCalib::TRAFO_AFFINE:
-//		this->ConvertDepthAffineToFloat(view->depth, this->shortImage, view->calib->disparityCalib.params);
-//		break;
-//	default:
-//		break;
-//	}
-//    
+	switch (view->calib->disparityCalib.type)
+	{
+	case ITMDisparityCalib::TRAFO_KINECT:
+		this->ConvertDisparityToDepth(view->depth, this->shortImage, &(view->calib->intrinsics_d), view->calib->disparityCalib.params);
+		break;
+	case ITMDisparityCalib::TRAFO_AFFINE:
+		this->ConvertDepthAffineToFloat(view->depth, this->shortImage, view->calib->disparityCalib.params);
+		break;
+	default:
+		break;
+	}
+
 
 	if (useBilateralFilter)
 	{

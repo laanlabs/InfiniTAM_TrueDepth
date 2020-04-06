@@ -51,6 +51,9 @@ using namespace InfiniTAM::Engine;
     
     int currentFrameNo;
     
+    int depthFrameIndex;
+    
+    
     NSTimeInterval totalProcessingTime;
     int totalProcessedFrames;
     
@@ -73,6 +76,9 @@ using namespace InfiniTAM::Engine;
     
     totalProcessingTime = 0;
     totalProcessedFrames = 0;
+    
+    depthFrameIndex = 0;
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -182,7 +188,40 @@ using namespace InfiniTAM::Engine;
     rgbSpace = CGColorSpaceCreateDeviceRGB();
     
     internalSettings = new ITMLibSettings();
+    
+    internalSettings->trackerType = internalSettings->TRACKER_ICP;
+    
+    internalSettings->noHierarchyLevels = 5;
+    internalSettings->depthTrackerICPThreshold = 0.02;
+    internalSettings->depthTrackerTerminationThreshold = 0.001;
+    
     //internalSettings->
+    NSLog(@" Tracker type: %i ", internalSettings->trackerType );
+    
+    NSLog(@" depthTrackerICPThreshold:  %5.2f", internalSettings->depthTrackerICPThreshold );
+    
+    NSLog(@" depthTrackerTerminationThreshold:  %f", internalSettings->depthTrackerTerminationThreshold );
+    
+    NSLog(@" noHierarchyLevels:  %5i", internalSettings->noHierarchyLevels );
+    NSLog(@" noICPRunTillLevel:  %5i", internalSettings->noICPRunTillLevel );
+    
+//    Tracker type: 1
+//    depthTrackerICPThreshold:   0.01
+//    depthTrackerTerminationThreshold:  0.001000
+//    noHierarchyLevels:      5
+//    noICPRunTillLevel:      0
+    
+    
+    
+    
+//    TRACKER_ICP,
+//    //! Identifies a tracker based on depth image (Ren et al, 2012)
+//    TRACKER_REN, - slow
+//    //! Identifies a tracker based on depth image and IMU measurement
+//    TRACKER_IMU, - 
+//    //! Identifies a tracker that use weighted ICP only on depth image
+//    TRACKER_WICP - crash
+    
     mainEngine = new ITMMainEngine(internalSettings, &imageSource->calib, imageSource->getRGBImageSize(),
                                    imageSource->getDepthImageSize());
     
@@ -214,19 +253,31 @@ using namespace InfiniTAM::Engine;
         return;
     }
     
+    /*
     dispatch_async(self.renderingQueue, ^{
-        while (imageSource->hasMoreImages()&&imuSource->hasMoreMeasurements())
+        
+        while (imageSource->hasMoreImages() && imuSource->hasMoreMeasurements())
         {
             //imageSource->getImages(inputRGBImage, inputRawDepthImage);
             imuSource->getMeasurement(imuMeasurement);
             
-            [frameLock lock];
-            [self updateImage];
-            [frameLock unlock];
+            //[frameLock lock];
+            //[self updateImage];
+            //[frameLock unlock];
             
+            
+            if ( frameReady ) {
+                [frameLock lock];
+                [self updateImage];
+                [frameLock unlock];
+                frameReady = false;
+            }
             
         }
+        
     });
+     */
+    
 }
 
 - (void) updateImage
@@ -237,8 +288,8 @@ using namespace InfiniTAM::Engine;
         
     NSDate *timerStart = [NSDate date];
     
-//    if (imuMeasurement != NULL) mainEngine->ProcessFrame(inputRGBImage, inputRawDepthImage, imuMeasurement);
-//    else
+    if (imuMeasurement != NULL) mainEngine->ProcessFrame(inputRGBImage, inputRawDepthImage, imuMeasurement);
+    else
     mainEngine->ProcessFrame(inputRGBImage, inputRawDepthImage);
     
     
@@ -270,6 +321,13 @@ using namespace InfiniTAM::Engine;
     CGContextRelease(cgContext);
 }
 
+// MARK: - True Depth
+
+
+
+
+// MARK: - Structure Sensor
+
 - (void)sensorDidDisconnect
 {
     [self.tbOut setText:@"disconnected "];
@@ -297,7 +355,56 @@ using namespace InfiniTAM::Engine;
     [self.tbOut setText:@"got frame c"];
 }
 
+
+
 - (void)sensorDidOutputDepthFrame:(STDepthFrame *)depthFrame
+{
+    depthFrameIndex++;
+    
+    //if ( depthFrameIndex % 2 != 0 ) { return; }
+    
+    
+    if (isDone)
+    {
+        isDone = false;
+        
+        CMRotationMatrix rotationMatrix = self.motionManager.deviceMotion.attitude.rotationMatrix;
+        
+        if (imuMeasurement != NULL)
+        {
+            imuMeasurement->R.m00 = rotationMatrix.m11; imuMeasurement->R.m01 = rotationMatrix.m12; imuMeasurement->R.m02 = rotationMatrix.m13;
+            imuMeasurement->R.m10 = rotationMatrix.m21; imuMeasurement->R.m11 = rotationMatrix.m22; imuMeasurement->R.m12 = rotationMatrix.m23;
+            imuMeasurement->R.m20 = rotationMatrix.m31; imuMeasurement->R.m21 = rotationMatrix.m32; imuMeasurement->R.m22 = rotationMatrix.m33;
+        }
+        
+    
+        //[frameLock lock];
+        
+        memcpy(inputRawDepthImage->GetData(MEMORYDEVICE_CPU), [depthFrame shiftData], imageSize.x * imageSize.y * sizeof(short));
+        
+//        uint16_t * ptr = (uint16_t *)inputRawDepthImage->GetData(MEMORYDEVICE_CPU);
+//        int total_pixels = imageSize.x * imageSize.y;
+//        float * depth_mm = depthFrame.depthInMillimeters;
+//        for ( int j = 0; j < total_pixels; j++ ) {
+//            float D = depth_mm[j];
+//            if ( D < 0 ) { D = 0.0; }
+//            if ( D >= 65536 ) { D = 65536-1; }
+//            ptr[j] = D;
+//        }
+        
+        //[frameLock unlock];
+        
+        dispatch_async(self.renderingQueue, ^{
+            
+            [self updateImage];
+            
+            isDone = true;
+        });
+    }
+}
+
+
+- (void)OLD______sensorDidOutputDepthFrame:(STDepthFrame *)depthFrame
 {
     if (isDone)
     {
@@ -312,21 +419,21 @@ using namespace InfiniTAM::Engine;
             imuMeasurement->R.m20 = rotationMatrix.m31; imuMeasurement->R.m21 = rotationMatrix.m32; imuMeasurement->R.m22 = rotationMatrix.m33;
         }
         
-        
-        
-        //memcpy(inputRawDepthImage->GetData(MEMORYDEVICE_CPU), [depthFrame shiftData], imageSize.x * imageSize.y * sizeof(short));
-        
+    
         [frameLock lock];
         
-        uint16_t * ptr = (uint16_t *)inputRawDepthImage->GetData(MEMORYDEVICE_CPU);
-        int total_pixels = imageSize.x * imageSize.y;
-        float * depth_mm = depthFrame.depthInMillimeters;
-        for ( int j = 0; j < total_pixels; j++ ) {
-            float D = depth_mm[j];
-            if ( D < 0 ) { D = 0.0; }
-            if ( D >= 65536 ) { D = 65536-1; }
-            ptr[j] = D;
-        }
+        memcpy(inputRawDepthImage->GetData(MEMORYDEVICE_CPU), [depthFrame shiftData], imageSize.x * imageSize.y * sizeof(short));
+        
+//        uint16_t * ptr = (uint16_t *)inputRawDepthImage->GetData(MEMORYDEVICE_CPU);
+//        int total_pixels = imageSize.x * imageSize.y;
+//        float * depth_mm = depthFrame.depthInMillimeters;
+//        for ( int j = 0; j < total_pixels; j++ ) {
+//            float D = depth_mm[j];
+//            if ( D < 0 ) { D = 0.0; }
+//            if ( D >= 65536 ) { D = 65536-1; }
+//            ptr[j] = D;
+//        }
+        
         [frameLock unlock];
         
         dispatch_async(self.renderingQueue, ^{
