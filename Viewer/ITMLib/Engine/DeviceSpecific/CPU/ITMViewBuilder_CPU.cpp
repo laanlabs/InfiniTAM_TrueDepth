@@ -35,29 +35,30 @@ void ITMViewBuilder_CPU::UpdateView(ITMView **view_ptr, ITMUChar4Image *rgbImage
 	this->shortImage->SetFrom(rawDepthImage, MemoryBlock<short>::CPU_TO_CPU);
 
     // use for forcing raw depth MM
-    //this->ConvertDepthAffineToFloat(view->depth, this->shortImage, view->calib->disparityCalib.params);
+    this->ConvertDepthAffineToFloat(view->depth, this->shortImage, view->calib->disparityCalib.params);
     
-	switch (view->calib->disparityCalib.type)
-	{
-	case ITMDisparityCalib::TRAFO_KINECT:
-		this->ConvertDisparityToDepth(view->depth, this->shortImage, &(view->calib->intrinsics_d), view->calib->disparityCalib.params);
-		break;
-	case ITMDisparityCalib::TRAFO_AFFINE:
-		this->ConvertDepthAffineToFloat(view->depth, this->shortImage, view->calib->disparityCalib.params);
-		break;
-	default:
-		break;
-	}
+//	switch (view->calib->disparityCalib.type)
+//	{
+//	case ITMDisparityCalib::TRAFO_KINECT:
+//		this->ConvertDisparityToDepth(view->depth, this->shortImage, &(view->calib->intrinsics_d), view->calib->disparityCalib.params);
+//		break;
+//	case ITMDisparityCalib::TRAFO_AFFINE:
+//		this->ConvertDepthAffineToFloat(view->depth, this->shortImage, view->calib->disparityCalib.params);
+//		break;
+//	default:
+//		break;
+//	}
 
 
 	if (useBilateralFilter)
 	{
 		//5 steps of bilateral filtering
 		this->DepthFiltering(this->floatImage, view->depth);
-		this->DepthFiltering(view->depth, this->floatImage);
-		this->DepthFiltering(this->floatImage, view->depth);
-		this->DepthFiltering(view->depth, this->floatImage);
-		this->DepthFiltering(this->floatImage, view->depth);
+		//this->DepthFiltering(view->depth, this->floatImage);
+        //this->DepthFiltering(this->floatImage, view->depth);
+		//this->DepthFiltering(view->depth, this->floatImage);
+		//this->DepthFiltering(this->floatImage, view->depth);
+        
 		view->depth->SetFrom(this->floatImage, MemoryBlock<float>::CPU_TO_CPU);
 	}
 

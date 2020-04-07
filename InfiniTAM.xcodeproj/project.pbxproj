@@ -10,6 +10,7 @@
 		01FAFAF21964A14700BF040D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01FAFAF11964A14700BF040D /* QuartzCore.framework */; };
 		2DFFE049199142E800761886 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DFFE048199142E800761886 /* CoreMotion.framework */; };
 		427EB9B6243BD9280040D424 /* calib_truedepth.txt in Resources */ = {isa = PBXBuildFile; fileRef = 427EB9B5243BD9280040D424 /* calib_truedepth.txt */; };
+		427EB9B8243BDC790040D424 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 427EB9B7243BDC790040D424 /* MobileCoreServices.framework */; };
 		4283C0C924340B9C005F9E92 /* Structure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4283C0C824340B9C005F9E92 /* Structure.framework */; };
 		4283C0CC24340BFB005F9E92 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A626D7531A0F93660086B8BF /* Metal.framework */; };
 		4283C0CF24340BFC005F9E92 /* MetalPerformanceShaders.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4283C0CD24340BFC005F9E92 /* MetalPerformanceShaders.framework */; };
@@ -100,6 +101,7 @@
 		01FAFAF11964A14700BF040D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2DFFE048199142E800761886 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		427EB9B5243BD9280040D424 /* calib_truedepth.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = calib_truedepth.txt; sourceTree = "<group>"; };
+		427EB9B7243BDC790040D424 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		4283C0C824340B9C005F9E92 /* Structure.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Structure.framework; path = Frameworks/Structure.framework; sourceTree = "<group>"; };
 		4283C0CD24340BFC005F9E92 /* MetalPerformanceShaders.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalPerformanceShaders.framework; path = System/Library/Frameworks/MetalPerformanceShaders.framework; sourceTree = SDKROOT; };
 		4283C0CE24340BFC005F9E92 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -314,6 +316,7 @@
 				4283C0D224340C24005F9E92 /* VideoToolbox.framework in Frameworks */,
 				4283C0D024340BFC005F9E92 /* MetalKit.framework in Frameworks */,
 				4283C0CC24340BFB005F9E92 /* Metal.framework in Frameworks */,
+				427EB9B8243BDC790040D424 /* MobileCoreServices.framework in Frameworks */,
 				6F2B4EDB1865324D00403B8C /* CoreGraphics.framework in Frameworks */,
 				6F2B4EDF1865326B00403B8C /* CoreImage.framework in Frameworks */,
 				6F2B4EE3186532CE00403B8C /* CoreVideo.framework in Frameworks */,
@@ -346,6 +349,7 @@
 		6F7C0CBF17F0EA0500692EC1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				427EB9B7243BDC790040D424 /* MobileCoreServices.framework */,
 				4283C0D124340C24005F9E92 /* VideoToolbox.framework */,
 				4283C0CE24340BFC005F9E92 /* MetalKit.framework */,
 				4283C0CD24340BFC005F9E92 /* MetalPerformanceShaders.framework */,
@@ -862,6 +866,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
 				);
+				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Viewer/InfiniTAM-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -869,7 +874,7 @@
 					COMPILE_WITH_METAL,
 				);
 				INFOPLIST_FILE = "Viewer/InfiniTAM-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_PREPROCESSOR_DEFINITIONS = "COMPILE_WITHOUT_CUDA __METALC__";
 				PRODUCT_BUNDLE_IDENTIFIER = com.labs.inftam;
@@ -898,7 +903,7 @@
 					COMPILE_WITH_METAL,
 				);
 				INFOPLIST_FILE = "Viewer/InfiniTAM-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_PREPROCESSOR_DEFINITIONS = "COMPILE_WITHOUT_CUDA __METALC__";
 				PRODUCT_BUNDLE_IDENTIFIER = com.labs.inftam;

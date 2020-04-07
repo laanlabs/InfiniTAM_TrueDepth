@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6F7C0CBC17F0EA0500692EC1"
-               BuildableName = "InfiniTAM.app"
+               BuildableName = "infinitamm.app"
                BlueprintName = "InfiniTAM"
                ReferencedContainer = "container:InfiniTAM.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6F7C0CBC17F0EA0500692EC1"
-            BuildableName = "InfiniTAM.app"
+            BuildableName = "infinitamm.app"
             BlueprintName = "InfiniTAM"
             ReferencedContainer = "container:InfiniTAM.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6F7C0CBC17F0EA0500692EC1"
-            BuildableName = "InfiniTAM.app"
+            BuildableName = "infinitamm.app"
             BlueprintName = "InfiniTAM"
             ReferencedContainer = "container:InfiniTAM.xcodeproj">
          </BuildableReference>

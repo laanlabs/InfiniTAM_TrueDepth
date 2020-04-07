@@ -18,10 +18,12 @@ struct RenderingBlock {
 #define VERY_CLOSE 0.05f
 #endif
 
-static const CONSTPTR(int) renderingBlockSizeX = 16;
-static const CONSTPTR(int) renderingBlockSizeY = 16;
+static const CONSTPTR(int) renderingBlockSizeX = 32;
+static const CONSTPTR(int) renderingBlockSizeY = 32;
 
-static const CONSTPTR(int) MAX_RENDERING_BLOCKS = 65536*4;
+static const CONSTPTR(int) MAX_RENDERING_BLOCKS = 65536*8;
+//static const CONSTPTR(int) MAX_RENDERING_BLOCKS = 65536;
+
 //static const int MAX_RENDERING_BLOCKS = 16384;
 static const CONSTPTR(int) minmaximg_subsample = 8;
 

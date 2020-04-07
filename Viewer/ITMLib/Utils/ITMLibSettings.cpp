@@ -6,14 +6,56 @@
 
 using namespace ITMLib::Objects;
 
+/// Size of a voxel, usually given in meters.
+//float voxelSize;
+//
+///** @{ */
+///** \brief
+//    Fallback parameters: consider only parts of the
+//    scene from @p viewFrustum_min in front of the camera
+//    to a distance of @p viewFrustum_max. Usually the
+//    actual depth range should be determined
+//    automatically by a ITMLib::Engine::ITMVisualisationEngine.
+//*/
+//float viewFrustum_min, viewFrustum_max;
+//
+///** @} */
+///** \brief
+//    Encodes the width of the band of the truncated
+//    signed distance transform that is actually stored
+//    in the volume. This is again usually specified in
+//    meters. The resulting width in voxels is @ref mu
+//    divided by @ref voxelSize.
+//*/
+//float mu;
+//
+///** \brief
+//    Up to @ref maxW observations per voxel are averaged.
+//    Beyond that a sliding average is computed.
+//*/
+//int maxW;
+//
+///** Stop integration once maxW has been reached. */
+//bool stopIntegratingAtMaxW;
+
+
 ITMLibSettings::ITMLibSettings(void)
-	: sceneParams(0.02f, 100, 0.005f, 0.2f, 3.0f, false)
+	//: sceneParams(0.02f, 100, 0.005f, 0.2f, 3.0f, false)
+    : sceneParams(0.02f, 60, 0.005f, 0.1f, 2.0f, true)
+
 {
+    // 0.02f,         100,          0.005f,                  0.2f,                  3.0f,                  false
+    // float mu, int maxW, float voxelSize, float viewFrustum_min, float viewFrustum_max, bool stopIntegratingAtMaxW
+    
 	/// depth threashold for the ICP tracker
-	depthTrackerICPThreshold = 0.1f * 0.1f;
+	//depthTrackerICPThreshold = 0.1f * 0.1f;
+    depthTrackerICPThreshold = 0.1f * 0.03f;
 
 	/// For ITMDepthTracker: ICP iteration termination threshold
-	depthTrackerTerminationThreshold = 1e-3f;
+	//depthTrackerTerminationThreshold = 1e-3f;
+    depthTrackerTerminationThreshold = 0.001;
+    
+    // 0.001
 
 	/// skips every other point when using the colour tracker
 	skipPoints = true;
@@ -37,7 +79,7 @@ ITMLibSettings::ITMLibSettings(void)
 	useApproximateRaycast = false;
 
 	/// enable or disable bilateral depth filtering;
-	useBilateralFilter = false;
+	useBilateralFilter = true;
 
 	//trackerType = TRACKER_COLOR;
 	trackerType = TRACKER_ICP;

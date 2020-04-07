@@ -11,7 +11,14 @@
 #import <Structure/Structure.h>
 #import <CoreMotion/CoreMotion.h>
 
-@interface ViewController : UIViewController <STSensorControllerDelegate>
+// true depth
+#import <AVFoundation/AVFoundation.h>
+#import <CoreVideo/CoreVideo.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <Accelerate/Accelerate.h>
+
+
+@interface ViewController : UIViewController <STSensorControllerDelegate, AVCaptureDataOutputSynchronizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *renderView;
 @property (weak, nonatomic) IBOutlet UITextField *tbOut;
