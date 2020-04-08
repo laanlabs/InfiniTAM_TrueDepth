@@ -41,7 +41,7 @@ using namespace ITMLib::Objects;
 
 ITMLibSettings::ITMLibSettings(void)
 	//: sceneParams(0.02f, 100, 0.005f, 0.2f, 3.0f, false)
-    : sceneParams(0.02f, 60, 0.005f, 0.1f, 2.0f, true)
+    : sceneParams(0.008f, 100, 0.00125f, 0.06f, 2.0f, true)
 
 {
     // 0.02f,         100,          0.005f,                  0.2f,                  3.0f,                  false
@@ -49,11 +49,11 @@ ITMLibSettings::ITMLibSettings(void)
     
 	/// depth threashold for the ICP tracker
 	//depthTrackerICPThreshold = 0.1f * 0.1f;
-    depthTrackerICPThreshold = 0.1f * 0.03f;
+    depthTrackerICPThreshold = 0.1f * 0.07f;
 
 	/// For ITMDepthTracker: ICP iteration termination threshold
 	//depthTrackerTerminationThreshold = 1e-3f;
-    depthTrackerTerminationThreshold = 0.001;
+    depthTrackerTerminationThreshold = 0.0015;
     
     // 0.001
 

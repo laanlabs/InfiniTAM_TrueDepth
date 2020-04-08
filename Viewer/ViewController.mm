@@ -897,7 +897,7 @@ static int frameIndex = 0;
         //size_t numPoints = 0;
         
         float minDepth = 0.01;
-        float maxDepth = 1.0; // 2.0
+        float maxDepth = 0.6; // 2.0
         
         
         uint16_t * ptr = (uint16_t *)inputRawDepthImage->GetData(MEMORYDEVICE_CPU);
