@@ -1,4 +1,14 @@
-# InfiniTAM v3
+# InfiniTAM 
+
+This is a modified version of the infiniTAM project that uses the TrueDepth sensor on compatible iOS devices.
+This is not based on the latest code on the infiniTAM repo, but rather from a version from 2016 posted here:
+https://github.com/victorprad/InfiniTAM/issues/40 
+
+Some parameters have been changed in ITMLibSettings.cpp for no good reason, so they may need to be changed back.
+
+__________________________________________
+
+( Original repo README copied here ) 
 
 This is the main branch of the software bundle "InfiniTAM", the current version is actively maintained by:
 
